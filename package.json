@@ -6,10 +6,10 @@
     "scripts": {
       "test": "npm run test",
       "install:": "cd backend && npm install && npm run dev e cd frontend && npm install && npm run dev",
-      "build:backend": "tsc -p tsconfig.json",
-      "build:frontend": "webpack --config webpack.config.js",
+      "build:backend": "nodemon --exec node --loader ts-node/esm backend/src/index.ts",
+      "build:frontend": "webpack --config frontend/webpack.config.js",
       "build": "concurrently \"npm run build:backend\" \"npm run build:frontend\"",
-      "dev:backend": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules backend/src/index.ts",
+      "dev:backend": "nodemon --exec \"node --loader ts-node/esm\" backend/src/index.ts",
       "dev:frontend": "webpack serve --config frontend/webpack.config.js --mode development",
       "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
     },
