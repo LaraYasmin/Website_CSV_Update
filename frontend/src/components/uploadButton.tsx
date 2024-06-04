@@ -62,6 +62,7 @@ const Upload: React.FC<UploadProps> = ({ onUpload }) => {
         Upload
       </button>
       <input
+        data-testid="csvFileInput"
         className="btn btn-outline-success"
         type="file"
         title="Upload"
