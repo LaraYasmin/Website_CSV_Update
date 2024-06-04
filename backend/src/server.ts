@@ -1,17 +1,21 @@
-import express, { Request, Response } from 'express';
+import express, { Router, Request, Response } from 'express';
 import multer from 'multer';
 import fs from 'fs';
 import csvParser from 'csv-parser';
 import sqlite3 from 'sqlite3';
 import { open, Database } from 'sqlite';
 
-const app = express();
+const router = Router();
 const upload = multer({ dest: 'uploads/' });
 const cors = require('cors');
 
-app.use(express.json());
-app.use(cors());
+router.use(express.json());
 
+const corsOptions = {
+  origin: 'http://localhost:4000'
+};
+
+router.use(cors(corsOptions));
 let db: Database;
 
 async function initDatabase() {
@@ -33,7 +37,8 @@ async function initDatabase() {
 
 initDatabase();
 
-app.post('/api/files', upload.single('file'), async (req: Request, res: Response) => {
+router.post('/api/files', upload.single('file'), async (req: Request, res: Response) => {
+  console.log('Received file upload request');
   try {
     if (!req.file) {
       throw new Error('No file uploaded');
@@ -65,7 +70,7 @@ app.post('/api/files', upload.single('file'), async (req: Request, res: Response
   }
 });
 
-app.get('/api/users', async (req: Request, res: Response) => {
+router.get('/api/users', async (req: Request, res: Response) => {
   try {
     const searchTerm = req.query.q as string;
 
@@ -90,4 +95,4 @@ app.get('/api/users', async (req: Request, res: Response) => {
   }
 });
 
-export default app;
+export default router;
