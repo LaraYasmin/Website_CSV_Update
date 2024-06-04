@@ -1,15 +1,15 @@
-import express from 'express'
-import { Router, Request, Response } from 'express';
-import path from 'path';
+import express from 'express';
+import bodyParser from 'body-parser';
+import routes from './server';
 
 const app = express();
-const route = Router()
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-route.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'Express with Typescript' })
-})
+app.use(routes);
 
-app.use(route)
-app.listen(3000, () => 'server running on port 3000')
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
